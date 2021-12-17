@@ -15,7 +15,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="/admin" class="nav-link">
+                    <a href="<?php echo base_url()."Dashboard";?>" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -24,7 +24,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="/admin/karyawan" class="nav-link">
+                    <a href="<?php echo base_url()."Pengguna";?>" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Pengguna
@@ -33,7 +33,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="/admin/absensi" class="nav-link">
+                    <a href="<?php echo base_url()."Bank";?>" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Bank Kata
@@ -42,7 +42,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="/admin/divisi" class="nav-link">
+                    <a href="<?php echo base_url()."Sentimen";?>" class="nav-link">
                         <i class="nav-icon fas fa-columns"></i>
                         <p>
                             Sentimen
