@@ -1,4 +1,106 @@
+<?php
+$sentiment = new \PHPInsight\Sentiment();
 
+use Abraham\TwitterOAuth\TwitterOAuth;
+
+$connection = new TwitterOAuth('Oadgku9IWIz7eQWCGQQo6QMwt', 'pZKcMWMYIjBAMICJgS4QX5FfDf3ZSDAvWcNPCm6A6KX8vLgez1', '1156935537774587905-45EL5NsQr8NkfW0qtgQ6ityi9MGrrP', 'uWNQCvHG8tRM4sB0ziOyojkY3nladi1485LvNf6QUV2aa');
+$content = $connection->get("account/verify_credentials");
+
+$pendidikan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'pendidikan unpad', 'tweet_mode' => 'extended']);
+$penelitian = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'penelitian unpad', 'tweet_mode' => 'extended']);
+$mahasiswa = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'mahasiswa unpad', 'tweet_mode' => 'extended']);
+$alumni = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'alumni unpad', 'tweet_mode' => 'extended']);
+$penerimaan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'penerimaan unpad', 'tweet_mode' => 'extended']);
+
+$tweet_pendidikan = $pendidikan->statuses;
+$tweet_penelitian = $penelitian->statuses;
+$tweet_mahasiswa = $mahasiswa->statuses;
+$tweet_alumni = $alumni->statuses;
+$tweet_penerimaan = $penerimaan->statuses;
+
+
+//Sorting Pendidikan lalu
+usort( $tweet_pendidikan, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+//Sorting Penelitian
+usort( $tweet_penelitian, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+// Sorting mahasiswa
+usort( $tweet_mahasiswa, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+// Sorting Alumni
+usort( $tweet_alumni, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+// Sorting Penerimaan
+usort( $tweet_penerimaan, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+
+//Get Trending Pendidikan
+$trend_pendidikan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#pendidikan', 'tweet_mode' => 'extended']);
+$trend_pendidikan = $trend_pendidikan->statuses;
+//Sorting untuk get tweets dengan likes terbanyak
+usort( $trend_pendidikan, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+
+//Get Trending Penelitian
+$trend_penelitian = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#penelitian', 'tweet_mode' => 'extended']);
+$trend_penelitian = $trend_penelitian->statuses;
+//Sorting untuk get tweets dengan likes terbanyak
+usort( $trend_penelitian, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+
+//Get Trending Mahasiswa
+$trend_mahasiswa = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#mahasiswa', 'tweet_mode' => 'extended']);
+$trend_mahasiswa = $trend_mahasiswa->statuses;
+//Sorting untuk get tweets dengan likes terbanyak
+usort( $trend_mahasiswa, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+
+//Get Trending Alumni
+$trend_alumni = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#alumni', 'tweet_mode' => 'extended']);
+$trend_alumni = $trend_alumni->statuses;
+//Sorting untuk get tweets dengan likes terbanyak
+usort( $trend_alumni, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+
+//Get Trending Penerimaan
+$trend_penerimaan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#penerimaan', 'tweet_mode' => 'extended']);
+$trend_penerimaan = $trend_penerimaan->statuses;
+//Sorting untuk get tweets dengan likes terbanyak
+usort( $trend_penerimaan, function( $a, $b) {
+  if( $a->favorite_count == $b->favorite_count)
+  return 0;
+  return $a->favorite_count < $b->favorite_count ? 1 : -1;
+});
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,13 +176,106 @@
                           <div class="heading">
                               <h3>Sentimen Positif</h3>
                           </div>
-                          <div class="d-flex media">
-                              <div class="media-body">
-                                  <h5>Title Link</h5>
-                                  <p class="text-start"><a href="#">Intro link</a> lorem ipsum dolor sit amet.</p>
-                                  <hr>
+                          <?php
+                          //Foreach Pendidikan
+                          foreach ($tweet_pendidikan as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "positif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
                               </div>
-                          </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Penelitian
+                          foreach ($tweet_penelitian as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "positif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Mahasiswa
+                          foreach ($tweet_mahasiswa as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "positif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Alumni
+                          foreach ($tweet_alumni as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "positif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Penerimaan
+                          foreach ($tweet_penerimaan as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "positif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
                       </div>
                   </div>
                   <div class="col-md-5 col-lg-4">
@@ -88,13 +283,106 @@
                           <div class="heading">
                               <h3>Sentimen Negatif</h3>
                           </div>
-                          <div class="d-flex media">
-                              <div class="media-body">
-                                  <h5>Title Link</a></h5>
-                                  <p class="text-start"><a href="#">Intro link</a> lorem ipsum dolor sit amet.</p>
-                                  <hr>
+                          <?php
+                          //Foreach Pendidikan
+                          foreach ($tweet_pendidikan as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "negatif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
                               </div>
-                          </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Penelitian
+                          foreach ($tweet_penelitian as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "negatif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Mahasiswa
+                          foreach ($tweet_mahasiswa as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "negatif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Alumni
+                          foreach ($tweet_alumni as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "negatif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Penerimaan
+                          foreach ($tweet_penerimaan as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "negatif"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
                       </div>
                   </div>
                   <div class="col-md-5 col-lg-4">
@@ -102,13 +390,106 @@
                           <div class="heading">
                               <h3>Sentimen Netral</h3>
                           </div>
-                          <div class="d-flex media">
-                              <div class="media-body">
-                                  <h5>Title Link</h5>
-                                  <p class="text-start"><a href="#">Intro link</a> lorem ipsum dolor sit amet.</p>
-                                  <hr>
+                          <?php
+                          //Foreach Pendidikan
+                          foreach ($tweet_pendidikan as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "netral"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
                               </div>
-                          </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Penelitian
+                          foreach ($tweet_penelitian as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "netral"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Mahasiswa
+                          foreach ($tweet_mahasiswa as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "netral"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Alumni
+                          foreach ($tweet_alumni as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "netral"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
+                          <?php
+                          //Foreach Penerimaan
+                          foreach ($tweet_penerimaan as $tweet) {
+                            $isi = $tweet->full_text;
+                            $scores = $sentiment->score($isi);
+                            $class = $sentiment->categorise($isi);
+                            if ($class == "netral"){
+                              ?>
+                              <div class="d-flex media">
+                                  <div class="media-body">
+                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <p class="text-start"><?php echo $isi; ?></p>
+                                      <hr>
+                                  </div>
+                              </div>
+                              <?php
+                                break;
+                            }
+                          }
+                          ?>
                       </div>
                   </div>
               </div>
@@ -120,8 +501,10 @@
             <div class="small-box bg-info">
               <div class="inner">
                 <h3>#Pendidikan</h3>
-
-                <p>New Orders</p>
+                <div class="media-body">
+                    <h5>@<?php echo $trend_pendidikan[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $trend_pendidikan[0]->full_text; ?></p>
+                </div>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -135,8 +518,10 @@
             <div class="small-box bg-success">
               <div class="inner">
                 <h3>#Penelitian</h3>
-
-                <p>Bounce Rate</p>
+                <div class="media-body">
+                    <h5>@<?php echo $trend_penelitian[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $trend_penelitian[0]->full_text; ?></p>
+                </div>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -150,8 +535,10 @@
             <div class="small-box bg-warning">
               <div class="inner">
                 <h3>#Mahasiswa</h3>
-
-                <p>User Registrations</p>
+                <div class="media-body">
+                    <h5>@<?php echo $trend_mahasiswa[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $trend_mahasiswa[0]->full_text; ?></p>
+                </div>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -165,8 +552,10 @@
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>#Alumni</h3>
-
-                <p>Unique Visitors</p>
+                <div class="media-body">
+                    <h5>@<?php echo $trend_alumni[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $trend_alumni[0]->full_text; ?></p>
+                </div>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
@@ -180,8 +569,10 @@
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>#Penerimaan</h3>
-
-                <p>Unique Visitors</p>
+                <div class="media-body">
+                    <h5>@<?php echo $trend_penerimaan[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $trend_penerimaan[0]->full_text; ?></p>
+                </div>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
