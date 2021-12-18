@@ -13,6 +13,8 @@ class Bank extends CI_Controller {
 	{
 		$data['title'] = "Halaman Bank Kata";
 		$data['negatif'] = $this->b_models->kata_negatif()->result();
+		$data['positif'] = $this->b_models->kata_positif()->result();
+		$data['netral'] = $this->b_models->kata_netral()->result();
 		$this->load->view('bank/index',$data);
 	}
 

@@ -2,15 +2,16 @@
 $sentiment = new \PHPInsight\Sentiment();
 use Abraham\TwitterOAuth\TwitterOAuth;
 $this->load->model('k_models');
+$this->load->model('s_models');
 
 $connection = new TwitterOAuth('Oadgku9IWIz7eQWCGQQo6QMwt', 'pZKcMWMYIjBAMICJgS4QX5FfDf3ZSDAvWcNPCm6A6KX8vLgez1', '1156935537774587905-45EL5NsQr8NkfW0qtgQ6ityi9MGrrP', 'uWNQCvHG8tRM4sB0ziOyojkY3nladi1485LvNf6QUV2aa');
 $content = $connection->get("account/verify_credentials");
 
-$pendidikan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'pendidikan unpad', 'tweet_mode' => 'extended']);
-$penelitian = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'penelitian unpad', 'tweet_mode' => 'extended']);
-$mahasiswa = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'mahasiswa unpad', 'tweet_mode' => 'extended']);
-$alumni = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'alumni unpad', 'tweet_mode' => 'extended']);
-$penerimaan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => 'penerimaan unpad', 'tweet_mode' => 'extended']);
+$pendidikan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'pendidikan unpad', 'tweet_mode' => 'extended']);
+$penelitian = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'penelitian unpad', 'tweet_mode' => 'extended']);
+$mahasiswa = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'mahasiswa unpad', 'tweet_mode' => 'extended']);
+$alumni = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'alumni unpad', 'tweet_mode' => 'extended']);
+$penerimaan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'penerimaan unpad', 'tweet_mode' => 'extended']);
 
 $tweet_pendidikan = $pendidikan->statuses;
 $tweet_penelitian = $penelitian->statuses;
@@ -30,6 +31,18 @@ function saveToContentTable($tweet){
     'sosialMedia' => "Twitter"
   ];
   $ci->k_models->insert_konten($data);
+}
+
+function saveToSentimenTable($tweet,$sentimen,$score){
+  $ci =& get_instance();
+  $data = [
+    'idKonten' => substr($tweet->id,0,10),
+    'sentimenPositif' => $score['positif'],
+    'sentimenNegatif' => $score['negatif'],
+    'sentimenNetral' => $score['netral'],
+    'sentimen' => $sentimen
+  ];
+  $ci->s_models->insert_sentimen($data);
 }
 
 //Sorting Pendidikan
@@ -185,13 +198,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                      <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                        <h7 style="float : right">Pendidikan</h7>
+                                      </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -206,13 +222,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Penelitian</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -227,13 +246,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Mahasiswa</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -248,13 +270,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Alumni</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -269,13 +294,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Penerimaan</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -297,13 +325,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Pendidikan</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -318,13 +349,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Penelitian</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -339,13 +373,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Mahasiswa</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -360,13 +397,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Alumni</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -381,13 +421,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Penerimaan</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -409,13 +452,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Pendidikan</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -430,13 +476,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Penelitian</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -451,13 +500,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Mahasiswa</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -472,13 +524,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Alumni</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }
@@ -493,13 +548,16 @@ usort( $trend_penerimaan, function( $a, $b) {
                               ?>
                               <div class="d-flex media">
                                   <div class="media-body">
-                                      <h5>@<?php echo $tweet->user->name; ?></h5>
+                                    <div><h5 style="float : left">@<?php echo $tweet->user->name; ?></h5>
+                                      <h7 style="float : right">Penerimaan</h7>
+                                    </div><br>
                                       <p class="text-start"><?php echo $isi; ?></p>
                                       <hr>
                                   </div>
                               </div>
                               <?php
                               saveToContentTable($tweet);
+                              saveToSentimenTable($tweet,$class,$scores);
                                 break;
                             }
                           }

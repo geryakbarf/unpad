@@ -38,10 +38,8 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Bank Kata</h1>
-            <br>
-            <a href="<?php echo base_url()."Bank/Tambah";?>"><button type="button" class="btn btn-block btn-primary col-sm-3">Tambah Data</button></a>
-          </div>
+            <h1>Halaman Sentimen</h1>
+            </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -58,76 +56,25 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                   <thead>
                   <tr>
                     <th>Nomor</th>
-                    <th>Kata</th>
-                    <th>Kategori</th>
+                    <th>Kalimat</th>
+                    <th>Positif</th>
+                    <th>Negatif</th>
+                    <th>Netral</th>
+                    <th>Sentimen</th>
                   </tr>
                   </thead>
                   <tbody>
                     <?php
-                    $i = 0;
-                    $nomor = null;
-                    while($i < count($neg)){
-                      ?>
-                      <tr>
-                        <td><?php echo $i+1; ?></td>
-                        <td><?php echo $neg[$i]; ?></td>
-                        <td>Negatif</td>
-                      </tr>
-                      <?php
-                      $nomor++;
-                      $i++;
-                    }
-                    //Menampilkan data negatif dari db
-                    foreach ($negatif as $item) {
+                    $nomor = 0;
+                    foreach ($sentimen as $item) {
                       ?>
                       <tr>
                         <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->kata; ?></td>
-                        <td>Negatif</td>
-                      </tr>
-                      <?php
-                        $nomor++;
-                      }
-                    $i = 0;
-                    while($i < count($neu)){
-                      ?>
-                      <tr>
-                        <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $neu[$i]; ?></td>
-                        <td>Netral</td>
-                      </tr>
-                      <?php
-                      $nomor = $nomor +1;;
-                      $i++;
-                    }
-                    foreach ($netral as $item) {
-                      ?>
-                      <tr>
-                        <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->kata; ?></td>
-                        <td>Netral</td>
-                      </tr>
-                      <?php
-                        $nomor++;
-                      }
-                    $i = 0;
-                    while($i < count($pos)){
-                      ?>
-                      <tr>
-                        <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $pos[$i]; ?></td>
-                        <td>Positif</td>
-                      </tr>
-                      <?php
-                      $nomor = $nomor +1;;
-                      $i++;
-                    }
-                    foreach ($positif as $item) {
-                      ?>
-                      <tr>
-                        <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->kata; ?></td>
-                        <td>Positif</td>
+                        <td><?php echo $item->isiKonten; ?></td>
+                        <td><?php echo $item->sentimenPositif; ?></td>
+                        <td><?php echo $item->sentimenNegatif; ?></td>
+                        <td><?php echo $item->sentimenNetral; ?></td>
+                        <td><?php echo $item->sentimen; ?></td>
                       </tr>
                       <?php
                         $nomor++;

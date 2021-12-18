@@ -24,4 +24,12 @@ class bank_models extends CI_Model
     	return $this->db->query('SELECT * FROM bankkata WHERE sentimen = "negatif"');
 	}
 
+  public function kata_positif(){
+    	return $this->db->query('SELECT * FROM bankkata WHERE sentimen = "positif"');
+	}
+
+  public function kata_netral(){
+    	return $this->db->query('SELECT * FROM bankkata WHERE sentimen = "netral"');
+	}
+
 }
