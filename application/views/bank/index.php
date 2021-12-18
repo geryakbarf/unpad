@@ -77,6 +77,17 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                       $nomor++;
                       $i++;
                     }
+                    //Menampilkan data negatif dari db
+                    foreach ($negatif as $item) {
+                      ?>
+                      <tr>
+                        <td><?php echo $nomor+1; ?></td>
+                        <td><?php echo $item->kata; ?></td>
+                        <td>Negatif</td>
+                      </tr>
+                      <?php
+                        $nomor++;
+                      }
                     $i = 0;
                     while($i < count($neu)){
                       ?>

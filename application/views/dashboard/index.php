@@ -1,7 +1,7 @@
 <?php
 $sentiment = new \PHPInsight\Sentiment();
-
 use Abraham\TwitterOAuth\TwitterOAuth;
+$this->load->model('k_models');
 
 $connection = new TwitterOAuth('Oadgku9IWIz7eQWCGQQo6QMwt', 'pZKcMWMYIjBAMICJgS4QX5FfDf3ZSDAvWcNPCm6A6KX8vLgez1', '1156935537774587905-45EL5NsQr8NkfW0qtgQ6ityi9MGrrP', 'uWNQCvHG8tRM4sB0ziOyojkY3nladi1485LvNf6QUV2aa');
 $content = $connection->get("account/verify_credentials");
@@ -18,8 +18,21 @@ $tweet_mahasiswa = $mahasiswa->statuses;
 $tweet_alumni = $alumni->statuses;
 $tweet_penerimaan = $penerimaan->statuses;
 
+function saveToContentTable($tweet){
+  $ci =& get_instance();
+  $data = [
+    'idKonten' => substr($tweet->id,0,10),
+    'namaAkun' => $tweet->user->screen_name,
+    'namaPengguna' => $tweet->user->name,
+    'tanggalPosting' => date('Y-m-d', strtotime($tweet->created_at)),
+    'isiKonten' => $tweet->full_text,
+    'jumlahLike' => $tweet->favorite_count,
+    'sosialMedia' => "Twitter"
+  ];
+  $ci->k_models->insert_konten($data);
+}
 
-//Sorting Pendidikan lalu
+//Sorting Pendidikan
 usort( $tweet_pendidikan, function( $a, $b) {
   if( $a->favorite_count == $b->favorite_count)
   return 0;
@@ -178,6 +191,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -198,6 +212,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -218,6 +233,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -238,6 +254,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -258,6 +275,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -285,6 +303,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -305,6 +324,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -325,6 +345,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -345,6 +366,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -365,6 +387,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -392,6 +415,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -412,6 +436,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -432,6 +457,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -452,6 +478,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
@@ -472,6 +499,7 @@ usort( $trend_penerimaan, function( $a, $b) {
                                   </div>
                               </div>
                               <?php
+                              saveToContentTable($tweet);
                                 break;
                             }
                           }
