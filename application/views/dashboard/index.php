@@ -7,18 +7,6 @@ $this->load->model('s_models');
 $connection = new TwitterOAuth('Oadgku9IWIz7eQWCGQQo6QMwt', 'pZKcMWMYIjBAMICJgS4QX5FfDf3ZSDAvWcNPCm6A6KX8vLgez1', '1156935537774587905-45EL5NsQr8NkfW0qtgQ6ityi9MGrrP', 'uWNQCvHG8tRM4sB0ziOyojkY3nladi1485LvNf6QUV2aa');
 $content = $connection->get("account/verify_credentials");
 
-$pendidikan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'pendidikan unpad', 'tweet_mode' => 'extended']);
-$penelitian = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'penelitian unpad', 'tweet_mode' => 'extended']);
-$mahasiswa = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'mahasiswa unpad', 'tweet_mode' => 'extended']);
-$alumni = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'alumni unpad', 'tweet_mode' => 'extended']);
-$penerimaan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'penerimaan unpad', 'tweet_mode' => 'extended']);
-
-$tweet_pendidikan = $pendidikan->statuses;
-$tweet_penelitian = $penelitian->statuses;
-$tweet_mahasiswa = $mahasiswa->statuses;
-$tweet_alumni = $alumni->statuses;
-$tweet_penerimaan = $penerimaan->statuses;
-
 function saveToContentTable($tweet){
   $ci =& get_instance();
   $data = [
@@ -45,31 +33,45 @@ function saveToSentimenTable($tweet,$sentimen,$score){
   $ci->s_models->insert_sentimen($data);
 }
 
-//Sorting Pendidikan
+//Tweet Tentang Pendidikan Unpad
+$pendidikan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'pendidikan unpad', 'tweet_mode' => 'extended']);
+$tweet_pendidikan = $pendidikan->statuses;
 usort( $tweet_pendidikan, function( $a, $b) {
   if( $a->favorite_count == $b->favorite_count)
   return 0;
   return $a->favorite_count < $b->favorite_count ? 1 : -1;
 });
-//Sorting Penelitian
+
+//Tweet Tentang Penelitian Unpad
+$penelitian = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'penelitian unpad', 'tweet_mode' => 'extended']);
+$tweet_penelitian = $penelitian->statuses;
 usort( $tweet_penelitian, function( $a, $b) {
   if( $a->favorite_count == $b->favorite_count)
   return 0;
   return $a->favorite_count < $b->favorite_count ? 1 : -1;
 });
-// Sorting mahasiswa
+
+// Tweet Tentang Mahasiswa Unpad
+$mahasiswa = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'mahasiswa unpad', 'tweet_mode' => 'extended']);
+$tweet_mahasiswa = $mahasiswa->statuses;
 usort( $tweet_mahasiswa, function( $a, $b) {
   if( $a->favorite_count == $b->favorite_count)
   return 0;
   return $a->favorite_count < $b->favorite_count ? 1 : -1;
 });
-// Sorting Alumni
+
+// Tweet Tentang Alumni Unpad
+$alumni = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'alumni unpad', 'tweet_mode' => 'extended']);
+$tweet_alumni = $alumni->statuses;
 usort( $tweet_alumni, function( $a, $b) {
   if( $a->favorite_count == $b->favorite_count)
   return 0;
   return $a->favorite_count < $b->favorite_count ? 1 : -1;
 });
-// Sorting Penerimaan
+
+// Tweet Tentang Penerimaan Unpad
+$penerimaan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => 'penerimaan unpad', 'tweet_mode' => 'extended']);
+$tweet_penerimaan = $penerimaan->statuses;
 usort( $tweet_penerimaan, function( $a, $b) {
   if( $a->favorite_count == $b->favorite_count)
   return 0;
@@ -77,7 +79,7 @@ usort( $tweet_penerimaan, function( $a, $b) {
 });
 
 //Get Trending Pendidikan
-$trend_pendidikan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#pendidikan', 'tweet_mode' => 'extended']);
+$trend_pendidikan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#pendidikan', 'tweet_mode' => 'extended']);
 $trend_pendidikan = $trend_pendidikan->statuses;
 //Sorting untuk get tweets dengan likes terbanyak
 usort( $trend_pendidikan, function( $a, $b) {
@@ -87,7 +89,7 @@ usort( $trend_pendidikan, function( $a, $b) {
 });
 
 //Get Trending Penelitian
-$trend_penelitian = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#penelitian', 'tweet_mode' => 'extended']);
+$trend_penelitian = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#penelitian', 'tweet_mode' => 'extended']);
 $trend_penelitian = $trend_penelitian->statuses;
 //Sorting untuk get tweets dengan likes terbanyak
 usort( $trend_penelitian, function( $a, $b) {
@@ -97,7 +99,7 @@ usort( $trend_penelitian, function( $a, $b) {
 });
 
 //Get Trending Mahasiswa
-$trend_mahasiswa = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#mahasiswa', 'tweet_mode' => 'extended']);
+$trend_mahasiswa = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#mahasiswa', 'tweet_mode' => 'extended']);
 $trend_mahasiswa = $trend_mahasiswa->statuses;
 //Sorting untuk get tweets dengan likes terbanyak
 usort( $trend_mahasiswa, function( $a, $b) {
@@ -107,7 +109,7 @@ usort( $trend_mahasiswa, function( $a, $b) {
 });
 
 //Get Trending Alumni
-$trend_alumni = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#alumni', 'tweet_mode' => 'extended']);
+$trend_alumni = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#alumni', 'tweet_mode' => 'extended']);
 $trend_alumni = $trend_alumni->statuses;
 //Sorting untuk get tweets dengan likes terbanyak
 usort( $trend_alumni, function( $a, $b) {
@@ -117,7 +119,7 @@ usort( $trend_alumni, function( $a, $b) {
 });
 
 //Get Trending Penerimaan
-$trend_penerimaan = $connection->get("search/tweets", ['count' => 20, 'exclude_replies' => true, 'q' => '#penerimaan', 'tweet_mode' => 'extended']);
+$trend_penerimaan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#penerimaan', 'tweet_mode' => 'extended']);
 $trend_penerimaan = $trend_penerimaan->statuses;
 //Sorting untuk get tweets dengan likes terbanyak
 usort( $trend_penerimaan, function( $a, $b) {
@@ -581,7 +583,7 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url().'Dashboard/Pendidikan';?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -598,7 +600,7 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url().'Dashboard/Penelitian'?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -615,7 +617,7 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url().'Dashboard/Mahasiswa' ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -632,7 +634,7 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url().'Dashboard/Alumni'; ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -649,7 +651,7 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url().'Dashboard/Penerimaan'?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
         </div>
