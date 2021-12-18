@@ -13,4 +13,10 @@ class Bank extends CI_Controller {
 		$data['title'] = "Halaman Bank Kata";
 		$this->load->view('bank/index',$data);
 	}
+
+	public function Tambah()
+	{
+		$data['title'] = "Tambah Kata Baru";
+		$this->load->view('bank/tambah',$data);
+	}
 }

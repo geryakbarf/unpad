@@ -40,7 +40,7 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
           <div class="col-sm-6">
             <h1>Bank Kata</h1>
             <br>
-            <button type="button" class="btn btn-block btn-primary col-sm-3">Tambah Data</button>
+            <a href="<?php echo base_url()."Bank/Tambah";?>"><button type="button" class="btn btn-block btn-primary col-sm-3">Tambah Data</button></a>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -154,7 +154,7 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,
-      "searching": false,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,
