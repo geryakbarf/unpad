@@ -52,7 +52,8 @@ class sentimen_models extends CI_Model
 	public function get_total_sentimen() {
 		$sql = 'SELECT
 							sentimen,
-							count( sentimen ) jumlah_sentimen 
+							count( sentimen ) jumlah_sentimen,
+							sum(jumlahLike) jumlah_like
 						FROM
 							kontensosmed
 							LEFT JOIN sentimen ON sentimen.idKonten = kontensosmed.idKonten 

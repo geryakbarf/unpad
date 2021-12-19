@@ -48,20 +48,29 @@
 								$total_negatif = 0;
 								$total_netral = 0;
 
+								$total_like = 0;
+								$total_like_positif = 0;
+								$total_like_negatif = 0;
+								$total_like_netral = 0;
+
 								if($total_sentimen->num_rows() > 0) { 
 									foreach($total_sentimen->result() as $row) {
 										$total += $row->jumlah_sentimen;
+										$total_like += $row->jumlah_like;
 
 										if($row->sentimen == 'positif') {
 											$total_positif = $row->jumlah_sentimen;
+											$total_like_positif = $row->jumlah_like;
 										}			
 
 										if($row->sentimen == 'negatif') {
 											$total_negatif = $row->jumlah_sentimen;
+											$total_like_negatif = $row->jumlah_like;
 										}
 
 										if($row->sentimen == 'netral') {
 											$total_netral = $row->jumlah_sentimen;
+											$total_like_netral = $row->jumlah_like;
 										}			
 									}
 								} ?>
@@ -71,6 +80,14 @@
 								<h5 class="text-center">Total Negatif <br> <?php echo $total_negatif ?></h5>
 								<h5 class="text-center">Total Netral <br> <?php echo $total_netral ?></h5>
 							</div>
+							<div class="col-2">
+								<h5 class="text-center">Total Like <br> <?php echo $total_like ?></h5>
+								<h5 class="text-center">Total Like Positif <br> <?php echo $total_like_positif ?></h5>
+								<h5 class="text-center">Total Like Negatif <br> <?php echo $total_like_negatif ?></h5>
+								<h5 class="text-center">Total Like Netral <br> <?php echo $total_like_netral ?></h5>
+							</div>
+						</div>
+						<div class="row">
 							<div class="col-5">
 								<div class="chart-container">
 									<div class="pie-chart-container">
