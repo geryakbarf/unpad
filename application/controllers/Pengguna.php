@@ -3,24 +3,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pengguna extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+	public function __construct()
+	  {
+	      parent::__construct();
+				if($this->session->userdata('username') == null)
+					redirect(base_url().'Login', 'refresh');
+				$this->load->model('u_models');
+	  }
+
 	public function index()
 	{
 		$data['title'] = "Halaman Pengguna";
+		$data['user'] = $this->u_models->get_all_user()->result();
 		$this->load->view('pengguna/index',$data);
+	}
+
+	public function Tambah()
+	{
+		$data['title'] = "Tambah Pengguna";
+		$this->load->view('pengguna/tambah',$data);
+	}
+
+	public function edit(){
+		$data['title'] = "Edit Pengguna";
+		$username = $this->input->get('username');
+		$data['user'] = $this->u_models->get_one_user($username)->result();
+		$this->load->view('pengguna/edit',$data);
 	}
 }

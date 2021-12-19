@@ -38,10 +38,10 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Halaman Pengguna</h1>
+            <h1>Bank Kata</h1>
             <br>
-            <a href="<?php echo base_url()."Pengguna/Tambah";?>"><button type="button" class="btn btn-block btn-primary col-sm-3">Tambah Data</button></a>
-            </div>
+            <a href="<?php echo base_url()."Bank/Tambah";?>"><button type="button" class="btn btn-block btn-primary col-sm-3">Tambah Data</button></a>
+          </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -58,24 +58,79 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                   <thead>
                   <tr>
                     <th>Nomor</th>
-                    <th>Username</th>
-                    <th>Nama Pengguna</th>
-                    <th>Aksi</th>
+                    <th>Kata</th>
+                    <th>Kategori</th>
                   </tr>
                   </thead>
                   <tbody>
                     <?php
-                    $nomor = 0;
-                    foreach ($user as $item) {
+                    $i = 0;
+                    $nomor = null;
+                    while($i < count($neg)){
                       ?>
                       <tr>
-                        <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->username; ?></td>
-                        <td><?php echo $item->namaAdmin; ?></td>
-                        <td><a href="<?php echo base_url()."Pengguna/edit?username=".$item->username; ?>"><button type="button" class="btn btn-info">Edit</button></td>
+                        <td><?php echo $i+1; ?></td>
+                        <td><?php echo $neg[$i]; ?></td>
+                        <td>Negatif</td>
                       </tr>
                       <?php
                       $nomor++;
+                      $i++;
+                    }
+                    //Menampilkan data negatif dari db
+                    foreach ($negatif as $item) {
+                      ?>
+                      <tr>
+                        <td><?php echo $nomor+1; ?></td>
+                        <td><a href="<?php echo base_url().'Bank/edit?kata='.$item->kata; ?>"><?php echo $item->kata; ?></a></td>
+                        <td>Negatif</td>
+                      </tr>
+                      <?php
+                        $nomor++;
+                      }
+                    $i = 0;
+                    while($i < count($neu)){
+                      ?>
+                      <tr>
+                        <td><?php echo $nomor+1; ?></td>
+                        <td><?php echo $neu[$i]; ?></td>
+                        <td>Netral</td>
+                      </tr>
+                      <?php
+                      $nomor = $nomor +1;;
+                      $i++;
+                    }
+                    foreach ($netral as $item) {
+                      ?>
+                      <tr>
+                        <td><?php echo $nomor+1; ?></td>
+                        <td><a href="<?php echo base_url().'Bank/edit?kata='.$item->kata; ?>"><?php echo $item->kata; ?></a></td>
+                        <td>Netral</td>
+                      </tr>
+                      <?php
+                        $nomor++;
+                      }
+                    $i = 0;
+                    while($i < count($pos)){
+                      ?>
+                      <tr>
+                        <td><?php echo $nomor+1; ?></td>
+                        <td><?php echo $pos[$i]; ?></td>
+                        <td>Positif</td>
+                      </tr>
+                      <?php
+                      $nomor = $nomor +1;;
+                      $i++;
+                    }
+                    foreach ($positif as $item) {
+                      ?>
+                      <tr>
+                        <td><?php echo $nomor+1; ?></td>
+                        <td><a href="<?php echo base_url().'Bank/edit?kata='.$item->kata; ?>"><?php echo $item->kata; ?></a></td>
+                        <td>Positif</td>
+                      </tr>
+                      <?php
+                        $nomor++;
                       }
                      ?>
                   </tbody>

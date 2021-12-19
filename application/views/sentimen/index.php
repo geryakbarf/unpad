@@ -38,16 +38,15 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Halaman Pengguna</h1>
-            <br>
-            <a href="<?php echo base_url()."Pengguna/Tambah";?>"><button type="button" class="btn btn-block btn-primary col-sm-3">Tambah Data</button></a>
+            <h1>Data Sentimen Tentang Unpad</h1><br>
+            <h3>Periode <?php echo $sentimen[count($sentimen)-1]->tanggalPosting. " s/d ".$sentimen[0]->tanggalPosting;?></h3>
             </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" id="form-sentimen">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -58,24 +57,28 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                   <thead>
                   <tr>
                     <th>Nomor</th>
-                    <th>Username</th>
-                    <th>Nama Pengguna</th>
-                    <th>Aksi</th>
+                    <th>Kalimat</th>
+                    <th>Positif</th>
+                    <th>Negatif</th>
+                    <th>Netral</th>
+                    <th>Sentimen</th>
                   </tr>
                   </thead>
                   <tbody>
                     <?php
                     $nomor = 0;
-                    foreach ($user as $item) {
+                    foreach ($sentimen as $item) {
                       ?>
                       <tr>
                         <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->username; ?></td>
-                        <td><?php echo $item->namaAdmin; ?></td>
-                        <td><a href="<?php echo base_url()."Pengguna/edit?username=".$item->username; ?>"><button type="button" class="btn btn-info">Edit</button></td>
+                        <td><?php echo $item->isiKonten; ?></td>
+                        <td><?php echo $item->sentimenPositif; ?></td>
+                        <td><?php echo $item->sentimenNegatif; ?></td>
+                        <td><?php echo $item->sentimenNetral; ?></td>
+                        <td><?php echo $item->sentimen; ?></td>
                       </tr>
                       <?php
-                      $nomor++;
+                        $nomor++;
                       }
                      ?>
                   </tbody>
@@ -125,6 +128,28 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
 <script src="<?= base_url('assets/'); ?>plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?= base_url('assets/'); ?>dist/js/adminlte.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+  var app = new Vue({
+    el :'#form-sentimen',
+    data : {
+
+    },
+    methods : {
+      showAlert: function(){
+        console.log("Vue sukses di load!")
+        if(sessionStorage.getItem("popup") == null) {
+        sessionStorage.setItem("popup", 1);
+        swal("Perhatian", "Perlu diperhatikan kalau angka pada kolom positif, negatif, dan netral merupakan angka skor hasil dari analisis sentimen dari postingan sosial media tentang Unpad", "warning")
+        }
+      }
+    },
+    mounted(){
+      this.showAlert()
+    }
+  });
+</script>
 <script>
   $(function () {
     $('#example2').DataTable({
