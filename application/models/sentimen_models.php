@@ -20,11 +20,11 @@ class sentimen_models extends CI_Model
 	}
 
   public function get_all_sentimen(){
-    	return $this->db->query('SELECT isiKonten, sentimenPositif, sentimenNegatif, sentimenNetral, sentimen FROM sentimen JOIN kontensosmed ON sentimen.idKonten = kontensosmed.idKonten');
+    	return $this->db->query('SELECT DATE_FORMAT(tanggalPosting, "%d-%m-%Y") AS tanggalPosting, isiKonten, sentimenPositif, sentimenNegatif, sentimenNetral, sentimen FROM sentimen JOIN kontensosmed ON sentimen.idKonten = kontensosmed.idKonten ORDER BY tanggalPosting DESC');
 	}
 
 	public function get_sentimen_group() {
-			return $this->db->query("SELECT sentimen, count(sentimen) jumlah_sentimen FROM `sentimen` GROUP BY sentimen ORDER BY sentimen DESC"); 
+			return $this->db->query("SELECT sentimen, count(sentimen) jumlah_sentimen FROM `sentimen` GROUP BY sentimen ORDER BY sentimen DESC");
 	}
 
 	public function get_sentimen_by_tanggal($sentimen='positif') {
@@ -34,16 +34,16 @@ class sentimen_models extends CI_Model
 								kontensosmed
 							LEFT JOIN (SELECT
 								count(sentimen) jumlah_sentimen,
-								kontensosmed.tanggalPosting 
+								kontensosmed.tanggalPosting
 							FROM
 								sentimen
-								LEFT JOIN kontensosmed ON kontensosmed.idKonten = sentimen.idKonten 
+								LEFT JOIN kontensosmed ON kontensosmed.idKonten = sentimen.idKonten
 							WHERE
-								sentimen = \''.$sentimen.'\' 
+								sentimen = \''.$sentimen.'\'
 							GROUP BY
 								tanggalPosting) sentimen on sentimen.tanggalPosting = kontensosmed.tanggalPosting
 							WHERE
-								kontensosmed.tanggalPosting BETWEEN CURDATE( ) - INTERVAL 2 WEEK 
+								kontensosmed.tanggalPosting BETWEEN CURDATE( ) - INTERVAL 2 WEEK
 								AND CURDATE( )';
 
 			return $this->db->query($sql);
@@ -56,9 +56,9 @@ class sentimen_models extends CI_Model
 							sum(jumlahLike) jumlah_like
 						FROM
 							kontensosmed
-							LEFT JOIN sentimen ON sentimen.idKonten = kontensosmed.idKonten 
-						WHERE kontensosmed.tanggalPosting BETWEEN CURDATE( ) - INTERVAL 2 WEEK 
-							AND CURDATE( ) 
+							LEFT JOIN sentimen ON sentimen.idKonten = kontensosmed.idKonten
+						WHERE kontensosmed.tanggalPosting BETWEEN CURDATE( ) - INTERVAL 2 WEEK
+							AND CURDATE( )
 						GROUP BY
 							sentimen';
 

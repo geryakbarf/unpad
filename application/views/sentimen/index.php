@@ -38,7 +38,8 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Halaman Sentimen</h1>
+            <h1>Data Sentimen Tentang Unpad</h1><br>
+            <h3>Periode <?php echo $sentimen[count($sentimen)-1]->tanggalPosting. " s/d ".$sentimen[0]->tanggalPosting;?></h3>
             </div>
         </div>
       </div><!-- /.container-fluid -->

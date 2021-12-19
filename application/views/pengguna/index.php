@@ -75,6 +75,7 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                         <td><a href="<?php echo base_url()."Pengguna/edit?username=".$item->username; ?>"><button type="button" class="btn btn-info">Edit</button></td>
                       </tr>
                       <?php
+                      $nomor++;
                       }
                      ?>
                   </tbody>

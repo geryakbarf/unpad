@@ -29,7 +29,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Halaman Report</h1>
+            <h1>Report Analitik</h1><br>
+      <h3>Periode <?php echo $all_sentimen[count($all_sentimen)-1]->tanggalPosting. " s/d ".$all_sentimen[0]->tanggalPosting;?></h3>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -42,7 +43,7 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-2">
-					<?php 
+					<?php
 								$total = 0;
 								$total_positif = 0;
 								$total_negatif = 0;
@@ -53,7 +54,7 @@
 								$total_like_negatif = 0;
 								$total_like_netral = 0;
 
-								if($total_sentimen->num_rows() > 0) { 
+								if($total_sentimen->num_rows() > 0) {
 									foreach($total_sentimen->result() as $row) {
 										$total += $row->jumlah_sentimen;
 										$total_like += $row->jumlah_like;
@@ -61,7 +62,7 @@
 										if($row->sentimen == 'positif') {
 											$total_positif = $row->jumlah_sentimen;
 											$total_like_positif = $row->jumlah_like;
-										}			
+										}
 
 										if($row->sentimen == 'negatif') {
 											$total_negatif = $row->jumlah_sentimen;
@@ -71,7 +72,7 @@
 										if($row->sentimen == 'netral') {
 											$total_netral = $row->jumlah_sentimen;
 											$total_like_netral = $row->jumlah_like;
-										}			
+										}
 									}
 								} ?>
 
@@ -140,7 +141,7 @@
   $(function(){
       //get the pie chart canvas
       var ctx = $("#pie-chart");
- 
+
       //pie chart data
       var data = {
         labels: cData.label,
@@ -161,7 +162,7 @@
           }
         ]
       };
- 
+
       //options
       var options = {
         responsive: true,
@@ -188,25 +189,25 @@
 					}
 				}
       };
- 
+
       //create Pie Chart class object
       var chart1 = new Chart(ctx, {
         type: "pie",
         data: data,
         options: options
       });
- 
+
   });
 </script>
 <script>
-  
- 
+
+
 var line_sentimen = document.getElementById("line-chart");
 
 Chart.defaults.global.defaultFontFamily = "Lato";
 Chart.defaults.global.defaultFontColor = "black";
 Chart.defaults.global.defaultFontSize = 12;
- 
+
 var dataFirst = {
     label: 'positif',
     data: cData.line_data_positif,
@@ -222,7 +223,7 @@ var dataFirst = {
     pointBorderWidth: 2,
     pointStyle: 'rect'
   };
- 
+
 var dataSecond = {
 		label: 'netral',
     data: cData.line_data_netral,
@@ -238,7 +239,7 @@ var dataSecond = {
     pointBorderWidth: 2,
     pointStyle: 'cross'
   };
- 
+
   var datathird = {
     label: 'negatif',
     data: cData.line_data_negatif,
@@ -254,12 +255,12 @@ var dataSecond = {
     pointBorderWidth: 2,
     pointStyle: 'rect',
   };
- 
+
 var lineData = {
   labels:  cData.line_label,
   datasets: [dataFirst, dataSecond,datathird]
 };
- 
+
 var chartOptions = {
 	title: {
 		display: true,
@@ -285,7 +286,7 @@ var chartOptions = {
                      if (Math.floor(label) === label) {
                          return label;
                      }
- 
+
                  },
              }
          }],
@@ -296,18 +297,18 @@ var chartOptions = {
           minRotation: 0,
         }
       }]
-          
+
      },
- 
-     
+
+
 };
- 
+
 var lineChart = new Chart(line_sentimen, {
   type: 'line',
   data: lineData,
   options: chartOptions
 });
- 
+
     </script>
 </body>
 </html>
