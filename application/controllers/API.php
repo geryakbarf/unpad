@@ -57,12 +57,71 @@ class API extends \chriskacerguis\RestServer\RestController
               'code' => 0,
               'message' => "Kata sudah ada dalam bank data!"
             ];
+          } else {
+            $data = [
+              'code' => 1,
+              'message' => "Kata sudah tersimpan di database!"
+            ];
           }
-          $data = [
-            'code' => 1,
-            'message' => "Kata sudah tersimpan di database!"
-          ];
         }
+      header('Content-type: application/json');
+      echo json_encode($data);
+    }
+
+    public function update_kata_post(){
+      require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.negatif.php");
+      require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.netral.php");
+      require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php");
+      $data = [];
+      $kata = strtolower($this->post('kata'));
+      $tingkat_sentimen = $this->post('tingkat_sentimen');
+      $data = [
+        'kata' => $kata,
+        'sentimen' => $tingkat_sentimen
+      ];
+        if(in_array($kata,$neg) || in_array($kata,$neu) || in_array($kata,$pos)){
+          $data = [
+            'code' => 0,
+            'message' => "Kata sudah ada dalam bank data!"
+          ];
+        } else {
+          $query = $this->b_models->update_kata($data);
+          if($query == false){
+            $data = [
+              'code' => 0,
+              'message' => "Terjadi kesalahan! Mohon hubungi sysadmin!"
+            ];
+          } else {
+            $data = [
+              'code' => 1,
+              'message' => "Kata sudah diperbarui!"
+            ];
+          }
+        }
+      header('Content-type: application/json');
+      echo json_encode($data);
+    }
+
+    public function delete_kata_post(){
+      $data = [];
+      $kata = strtolower($this->post('kata'));
+      $tingkat_sentimen = $this->post('tingkat_sentimen');
+      $data = [
+        'kata' => $kata,
+        'sentimen' => $tingkat_sentimen
+      ];
+      $query = $this->b_models->delete_kata($data);
+      if($query == false){
+            $data = [
+              'code' => 0,
+              'message' => "Terjadi kesalahan! Mohon hubungi sysadmin!"
+            ];
+          } else {
+            $data = [
+              'code' => 1,
+              'message' => "Kata sudah berhasil dihapus!"
+            ];
+          }
       header('Content-type: application/json');
       echo json_encode($data);
     }

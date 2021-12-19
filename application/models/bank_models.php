@@ -20,6 +20,18 @@ class bank_models extends CI_Model
     }
 	}
 
+  public function update_kata($data){
+    extract($data);
+    $this->db->where('kata', $kata);
+    return $this->db->update($this->table, $data);
+  }
+
+  public function delete_kata($data){
+    extract($data);
+    $this->db->where('kata', $kata);
+    return $this->db->delete($this->table, $data);
+  }
+
   public function kata_negatif(){
     	return $this->db->query('SELECT * FROM bankkata WHERE sentimen = "negatif"');
 	}
@@ -31,5 +43,9 @@ class bank_models extends CI_Model
   public function kata_netral(){
     	return $this->db->query('SELECT * FROM bankkata WHERE sentimen = "netral"');
 	}
+
+  public function get_one_kata($kata){
+    return $this->db->query("SELECT * FROM bankkata WHERE kata = '$kata'");
+  }
 
 }

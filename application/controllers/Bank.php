@@ -25,4 +25,11 @@ class Bank extends CI_Controller {
 		$data['title'] = "Tambah Kata Baru";
 		$this->load->view('bank/tambah',$data);
 	}
+
+	public function edit(){
+		$data['title'] = "Edit Kata";
+		$kata = $this->input->get('kata');
+		$data['kata'] = $this->b_models->get_one_kata($kata)->result();
+		$this->load->view('bank/edit',$data);
+	}
 }
