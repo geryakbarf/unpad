@@ -7,6 +7,8 @@ class Bank extends CI_Controller {
 		{
 				parent::__construct();
 				$this->load->model('b_models');
+				if($this->session->userdata('username') == null)
+					redirect(base_url().'Login', 'refresh');
 		}
 
 	public function index()
@@ -22,5 +24,12 @@ class Bank extends CI_Controller {
 	{
 		$data['title'] = "Tambah Kata Baru";
 		$this->load->view('bank/tambah',$data);
+	}
+
+	public function edit(){
+		$data['title'] = "Edit Kata";
+		$kata = $this->input->get('kata');
+		$data['kata'] = $this->b_models->get_one_kata($kata)->result();
+		$this->load->view('bank/edit',$data);
 	}
 }

@@ -82,7 +82,7 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                       ?>
                       <tr>
                         <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->kata; ?></td>
+                        <td><a href="<?php echo base_url().'Bank/edit?kata='.$item->kata; ?>"><?php echo $item->kata; ?></a></td>
                         <td>Negatif</td>
                       </tr>
                       <?php
@@ -104,7 +104,7 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                       ?>
                       <tr>
                         <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->kata; ?></td>
+                        <td><a href="<?php echo base_url().'Bank/edit?kata='.$item->kata; ?>"><?php echo $item->kata; ?></a></td>
                         <td>Netral</td>
                       </tr>
                       <?php
@@ -126,7 +126,7 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
                       ?>
                       <tr>
                         <td><?php echo $nomor+1; ?></td>
-                        <td><?php echo $item->kata; ?></td>
+                        <td><a href="<?php echo base_url().'Bank/edit?kata='.$item->kata; ?>"><?php echo $item->kata; ?></a></td>
                         <td>Positif</td>
                       </tr>
                       <?php

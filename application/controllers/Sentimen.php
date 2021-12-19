@@ -7,6 +7,8 @@ class Sentimen extends CI_Controller {
 		{
 				parent::__construct();
 				$this->load->model('s_models');
+				if($this->session->userdata('username') == null)
+					redirect(base_url().'Login', 'refresh');
 		}
 
 	public function index()
