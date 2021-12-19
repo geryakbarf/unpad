@@ -10,7 +10,7 @@
   <ul class="navbar-nav ml-auto">
     <!-- Messages Dropdown Menu -->
     <li class="nav-item dropdown">
-      <a class="nav-link" href="#">Logout
+      <a class="nav-link" href="<?php echo base_url().'Login/Logout' ?>">Logout
       </a>
     </li>
   </ul>

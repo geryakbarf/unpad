@@ -7,6 +7,8 @@ class Dashboard extends CI_Controller {
 	  {
 	      parent::__construct();
 	      include(APPPATH."libraries/autoload.php");
+				if($this->session->userdata('username') == null)
+					redirect(base_url().'Login', 'refresh');
 	  }
 
 	public function index(){

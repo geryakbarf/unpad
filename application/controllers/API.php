@@ -1,5 +1,4 @@
 <?php
-
 require APPPATH . '/libraries/RestController.php';
 require APPPATH . '/libraries/Format.php';
 
@@ -10,6 +9,30 @@ class API extends \chriskacerguis\RestServer\RestController
   		parent::__construct($config);
       $this->load->model('b_models');
   	}
+
+    public function aksi_login_post(){
+      $username = $this->post('username');
+      $password = $this->post('password');
+      $data = [];
+      if($username != "admin" || $password != "admin"){
+        $data = [
+          'code' => 0,
+          'message' => "Username atau password salah!"
+        ];
+      } else {
+        $data = [
+          'code' => 1,
+          'message' => "Selamat datang! Anda berhasil login. Mohon tunggu, anda sedang diarahkan ke halaman Dashboard"
+        ];
+        $data_session = array (
+          'username' => 'admin',
+          'status' => 'login'
+        );
+        $this->session->set_userdata($data_session);
+      }
+      header('Content-type: application/json');
+      echo json_encode($data);
+    }
 
     public function insert_kata_post(){
       require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.negatif.php");
