@@ -98,16 +98,6 @@ usort( $trend_penelitian, function( $a, $b) {
   return $a->favorite_count < $b->favorite_count ? 1 : -1;
 });
 
-//Get Trending Alumni
-$trend_alumni = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#alumni', 'tweet_mode' => 'extended']);
-$trend_alumni = $trend_alumni->statuses;
-//Sorting untuk get tweets dengan likes terbanyak
-usort( $trend_alumni, function( $a, $b) {
-  if( $a->favorite_count == $b->favorite_count)
-  return 0;
-  return $a->favorite_count < $b->favorite_count ? 1 : -1;
-});
-
 //Get Trending Penerimaan
 $trend_penerimaan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#penerimaan', 'tweet_mode' => 'extended']);
 $trend_penerimaan = $trend_penerimaan->statuses;
@@ -617,8 +607,8 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="inner">
                 <h3>#Alumni</h3>
                 <div class="media-body">
-                    <h5>@<?php echo $trend_alumni[0]->user->name; ?></h5>
-                    <p class="text-start"><?php echo $trend_alumni[0]->full_text; ?></p>
+                    <h5>@<?php echo $tweet_alumni[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $tweet_alumni[0]->full_text; ?></p>
                 </div>
               </div>
               <div class="icon">
