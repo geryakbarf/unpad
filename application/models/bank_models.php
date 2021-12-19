@@ -10,8 +10,7 @@ class bank_models extends CI_Model
         parent::__construct();
     }
 
-    public function insert_kata($data)
-	{
+    public function insert_kata($data){
     $query = $this->db->query("SELECT * FROM bankkata WHERE kata = '{$data['kata']}'");
     if($query->num_rows() > 0){
       return false;

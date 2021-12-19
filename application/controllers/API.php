@@ -8,13 +8,15 @@ class API extends \chriskacerguis\RestServer\RestController
   	{
   		parent::__construct($config);
       $this->load->model('b_models');
+      $this->load->model('u_models');
   	}
 
     public function aksi_login_post(){
       $username = $this->post('username');
       $password = $this->post('password');
       $data = [];
-      if($username != "admin" || $password != "admin"){
+      $is_valid = $this->u_models->login($username,$password);
+      if($is_valid == false){
         $data = [
           'code' => 0,
           'message' => "Username atau password salah!"
@@ -29,6 +31,49 @@ class API extends \chriskacerguis\RestServer\RestController
           'status' => 'login'
         );
         $this->session->set_userdata($data_session);
+      }
+      header('Content-type: application/json');
+      echo json_encode($data);
+    }
+
+    public function insert_pengguna_post(){
+      $data = [
+        'username' => $this->post('username'),
+        'password' => $this->post('password'),
+        'namaAdmin' => $this->post('namaAdmin')
+      ];
+      $query = $this->u_models->insert_pengguna($data);
+      if($query == true){
+        $data = [
+          'code' => 1,
+          'message' => "Berhasil memasukkan data admin baru!"
+        ];
+      } else {
+        $data = [
+          'code' => 0,
+          'message' => "Terjadi kesalahan! Harap periksa apakah username sudah terpakai?"
+        ];
+      }
+      header('Content-type: application/json');
+      echo json_encode($data);
+    }
+
+    public function update_pengguna_post(){
+      $data = [
+        'username' => $this->post('username'),
+        'namaAdmin' => $this->post('namaAdmin')
+      ];
+      $query = $this->u_models->update_pengguna($data);
+      if($query == true){
+        $data = [
+          'code' => 1,
+          'message' => "Berhasil memperbarui data admin!"
+        ];
+      } else {
+        $data = [
+          'code' => 0,
+          'message' => "Terjadi kesalahan! Harap hubungi sysadmin!"
+        ];
       }
       header('Content-type: application/json');
       echo json_encode($data);
