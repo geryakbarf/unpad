@@ -7,6 +7,8 @@ class Report extends CI_Controller {
 	{
 			parent::__construct();
 			$this->load->model(array('sentimen_models', 'konten_models'));
+			if($this->session->userdata('username') == null)
+				redirect(base_url().'Login', 'refresh');
 	}
 
 	public function index()

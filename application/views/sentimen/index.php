@@ -46,7 +46,7 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" id="form-sentimen">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -128,6 +128,28 @@ require_once(APPPATH."libraries/lib/PHPInsight/dictionaries/source.positif.php")
 <script src="<?= base_url('assets/'); ?>plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?= base_url('assets/'); ?>dist/js/adminlte.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+  var app = new Vue({
+    el :'#form-sentimen',
+    data : {
+
+    },
+    methods : {
+      showAlert: function(){
+        console.log("Vue sukses di load!")
+        if(sessionStorage.getItem("popup") == null) {
+        sessionStorage.setItem("popup", 1);
+        swal("Perhatian", "Perlu diperhatikan kalau angka pada kolom positif, negatif, dan netral merupakan angka skor hasil dari analisis sentimen dari postingan sosial media tentang Unpad", "warning")
+        }
+      }
+    },
+    mounted(){
+      this.showAlert()
+    }
+  });
+</script>
 <script>
   $(function () {
     $('#example2').DataTable({
