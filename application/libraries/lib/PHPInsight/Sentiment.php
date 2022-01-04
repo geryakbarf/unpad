@@ -27,13 +27,13 @@ class Sentiment {
 
 	/**
 	 * Location of the dictionary files
-	 * @var str 
+	 * @var str
 	 */
 	private $dataFolder = '';
 
 	/**
 	 * List of tokens to ignore
-	 * @var array 
+	 * @var array
 	 */
 	private $ignoreList = array();
 
@@ -45,7 +45,7 @@ class Sentiment {
 
 	/**
 	 * Storage of cached dictionaries
-	 * @var array 
+	 * @var array
 	 */
 	private $dictionary = array();
 
@@ -69,7 +69,7 @@ class Sentiment {
 
 	/**
 	 * Token score per class
-	 * @var array 
+	 * @var array
 	 */
 	private $classTokCounts = array(
 		'positif' => 0,
@@ -89,7 +89,7 @@ class Sentiment {
 
 	/**
 	 * Number of tokens in a text
-	 * @var int 
+	 * @var int
 	 */
 	private $tokCount = 0;
 
@@ -195,7 +195,7 @@ class Sentiment {
 
 	/**
 	 * Get the class of the text based on it's score
-	 * 
+	 *
 	 * @param str $sentence
 	 * @return str pos|neu|neg
 	 */
@@ -215,6 +215,26 @@ class Sentiment {
 	 * @param str $class
 	 * @return boolean
 	 */
+
+	 public function dbConnect(){
+    $db = new \MySQLi('localhost', 'root', '', 'unpad');
+    return $db;
+}
+
+	public function getKata($class){
+    $db = $this->dbConnect();
+    if ($db->connect_errno == 0) {
+        $res = $db->query("SELECT * FROM bankkata WHERE sentimen = '$class'");
+        if ($res) {
+            $data = $res->fetch_all(MYSQLI_ASSOC);
+            $res->free();
+            return $data;
+        } else
+            return FALSE;
+    } else
+        return FALSE;
+}
+
 	public function setDictionary($class) {
 		/**
 		 *  For some people this file extention causes some problems!
@@ -358,13 +378,23 @@ class Sentiment {
 			//Push results into $wordList array
 			array_push($wordList, $trimmed);
 		}
+
+		//Get Data From db
+		$data = $this->getKata($type);
+		if($data){
+			foreach($data as $row){
+				$word = stripcslashes($row['kata']);
+				$trimmed = trim($word);
+				array_push($wordList, $trimmed);
+			}//endfor
+		}//endif
 		//Return $wordList
 		return $wordList;
 	}
 
 	/**
 	 * Function to clean a string so all characters with accents are turned into ASCII characters. EG: ‡ = a
-	 * 
+	 *
 	 * @param str $string
 	 * @return str
 	 */
