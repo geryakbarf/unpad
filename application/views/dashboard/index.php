@@ -78,36 +78,6 @@ usort( $tweet_penerimaan, function( $a, $b) {
   return $a->favorite_count < $b->favorite_count ? 1 : -1;
 });
 
-//Get Trending Pendidikan
-$trend_pendidikan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#pendidikan', 'tweet_mode' => 'extended']);
-$trend_pendidikan = $trend_pendidikan->statuses;
-//Sorting untuk get tweets dengan likes terbanyak
-usort( $trend_pendidikan, function( $a, $b) {
-  if( $a->favorite_count == $b->favorite_count)
-  return 0;
-  return $a->favorite_count < $b->favorite_count ? 1 : -1;
-});
-
-//Get Trending Penelitian
-$trend_penelitian = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#penelitian', 'tweet_mode' => 'extended']);
-$trend_penelitian = $trend_penelitian->statuses;
-//Sorting untuk get tweets dengan likes terbanyak
-usort( $trend_penelitian, function( $a, $b) {
-  if( $a->favorite_count == $b->favorite_count)
-  return 0;
-  return $a->favorite_count < $b->favorite_count ? 1 : -1;
-});
-
-//Get Trending Penerimaan
-$trend_penerimaan = $connection->get("search/tweets", ['exclude_replies' => true, 'q' => '#penerimaan', 'tweet_mode' => 'extended']);
-$trend_penerimaan = $trend_penerimaan->statuses;
-//Sorting untuk get tweets dengan likes terbanyak
-usort( $trend_penerimaan, function( $a, $b) {
-  if( $a->favorite_count == $b->favorite_count)
-  return 0;
-  return $a->favorite_count < $b->favorite_count ? 1 : -1;
-});
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -556,8 +526,8 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="inner">
                 <h3>#Pendidikan</h3>
                 <div class="media-body">
-                    <h5>@<?php echo $trend_pendidikan[0]->user->name; ?></h5>
-                    <p class="text-start"><?php echo $trend_pendidikan[0]->full_text; ?></p>
+                    <h5>@<?php echo $tweet_pendidikan[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $tweet_pendidikan[0]->full_text; ?></p>
                 </div>
               </div>
               <div class="icon">
@@ -573,8 +543,8 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="inner">
                 <h3>#Penelitian</h3>
                 <div class="media-body">
-                    <h5>@<?php echo $trend_penelitian[0]->user->name; ?></h5>
-                    <p class="text-start"><?php echo $trend_penelitian[0]->full_text; ?></p>
+                    <h5>@<?php echo $tweet_penelitian[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $tweet_penelitian[0]->full_text; ?></p>
                 </div>
               </div>
               <div class="icon">
@@ -624,8 +594,8 @@ usort( $trend_penerimaan, function( $a, $b) {
               <div class="inner">
                 <h3>#Penerimaan</h3>
                 <div class="media-body">
-                    <h5>@<?php echo $trend_penerimaan[0]->user->name; ?></h5>
-                    <p class="text-start"><?php echo $trend_penerimaan[0]->full_text; ?></p>
+                    <h5>@<?php echo $tweet_penerimaan[0]->user->name; ?></h5>
+                    <p class="text-start"><?php echo $tweet_penerimaan[0]->full_text; ?></p>
                 </div>
               </div>
               <div class="icon">
